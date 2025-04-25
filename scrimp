@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+# Define the command
+
+my $command1 = "/usr/local/bin/screenshot";
+my $command2 = "/usr/local/bin/editfile";
+
+# Execute the command
+system($command1) == 0
+    or die "Failed to execute command1: $!";
+
+system($command2) == 0
+    or die "Failed to execute command2: $!";
+
