@@ -14,6 +14,10 @@ You need to have installed all the required dependencies like "Perl,, to be inst
   Useful when watching videos and need to take notes as it then opens gimp in order to edit the image right away.
 - Feature 2: Deallocates the memory of the used screenshot.png file used only temporarily. 
 
+## Requirements
+- perl
+- gimp-2.10
+
 ## Installation
 
 1. Clone this repository to your local machine:
