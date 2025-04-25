@@ -19,3 +19,18 @@ You need to have installed all the required dependencies like "Perl,, to be inst
 1. Clone this repository to your local machine:
    ```bash
    git clone git@github.com:<your-username>/scrimp.git
+``
+move dependencies to bin folder that is included in the PATH variable.
+   2. sudo cp scrimp/scrimp /usr/local/bin
+   3. sudo cp scrimp/screenshot /usr/local/bin
+   4. sudo cp scrimp/editfile /usr/local/bin
+Turn the files into executables.
+   5. chmod +x /usr/local/bin/scrimp
+   6. chmod +x /usr/local/bin/screenshot
+   7. chmod +x /usr/local/bin/editfile
+   8. sudo source /usr/local/bin/scrimp
+
+## Run
+   ```
+   scrimp
+  ```
