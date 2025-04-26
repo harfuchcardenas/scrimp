@@ -5,7 +5,10 @@ Command invented
 # Scrimp
 
 Scrimp is a program designed by the need of printing a snapshot of the screen with a linux command written in perl.
-You need to have installed all the required dependencies like "Perl,, to be installed before to run successfully this pregram.
+You need to have installed all the required dependencies like "Perl,, to be installed before to run successfully this
+program. The problem would have arisen that the command ,,gnome-creenshot'' would save automatically the screenshots
+in the default folder (Pictures/Screenpics) but I wanted to go through a list of folders and save screenshots 
+differently on different folders at any time.
 
 
 ## Features
