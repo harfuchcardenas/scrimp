@@ -1,4 +1,4 @@
-scrimp [sc-(reen) - (g)-imp)]
+scrimp [scr-(een) - (g)-imp)]
 
 Command invented 
 
