@@ -3,16 +3,18 @@ use strict;
 use warnings;
 
 # Define the commands
-my $command1 = "/usr/local/bin/screenshot";
-my $command2 = "/usr/local/bin/editfile";
+my $command1 = `pwd`;
+chomp($command1);
+my $command2 = $command1;
+$command1 .= '/screenshot';
+$command2 .= '/editfile';
 
-# Execute the first command
-system($command1);
-
-# Execute the second command only if the first was successful
-my $exit_code2 = system($command2);
-if ($exit_code2 == 0) {
-        print "Successfully opened file in GIMP.\n";
-}else {
-	die "Failed to execute GIMP (exit code $exit_code2): $!";
+#Retrieve errors
+my $status1 = system($command1);
+my $status2;
+if ($status1 == 0) {
+    $status2 = system($command2);
+    if ($status2 != 0) {
+        print "Gimp was not executed successfully!\n";
+    }
 }
