@@ -10,7 +10,7 @@ chomp($current_dir);
 my $file_path = "$current_dir/screenshot.png";
 
 # Use gnome-screenshot to take the screenshot and save it
-my $command = "gnome-screenshot --area -f \"$file_path\"";
+my $command = "flameshot gui --delay 3000 --path \"$file_path\"";
 system($command);
 
 if (-e $file_path) {
