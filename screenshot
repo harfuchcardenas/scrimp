@@ -7,14 +7,84 @@ my $current_dir = `pwd`;
 chomp($current_dir);
 
 # Define the full path for the screenshot file
-my $file_path = "$current_dir/screenshot.png";
+my $file_path = $current_dir."/screenshot.png";
 
-# Use gnome-screenshot to take the screenshot and save it
-my $command = "flameshot gui --delay 3000 --path \"$file_path\"";
-system($command);
+# Returns true if a program is available in PATH
+sub is_installed {
+    my ($program) = @_;
+    return system("command -v $program >/dev/null 2>&1") == 0;
+}
+ 
+# Returns the install command for the detected package manager, or undef
+sub install_command {
+    my ($package) = @_;
+    $package //= 'flameshot';
+
+    my %commands = (
+        'apt-get' => "sudo apt-get install -y $package",
+        'dnf'     => "sudo dnf install -y $package",
+        'pacman'  => "sudo pacman -S --noconfirm $package",
+        'zypper'  => "sudo zypper install -y $package",
+    );
+
+    # Checked in this order, first match wins
+    for my $manager (qw(apt-get dnf pacman zypper)) {
+        return $commands{$manager} if is_installed($manager);
+    }
+
+    return;  # no supported package manager found
+}
+
+sub run_flameshot {
+    my ($file_path) = @_;
+
+    # --raw prints the image to stdout so we can save it to the exact path
+    my $image = `flameshot gui --raw > $file_path`;
+
+    if (!defined $image || $image eq '') {
+        print "Screenshot cancelled\n";
+        return 1;
+    }
+
+    open(my $fh, '>:raw', $file_path) or die "Cannot write $file_path: $!\n";
+    print {$fh} $image;
+    close($fh);
+
+    return 0;
+}
+
+
+if(is_installed('flameshot')) {
+    run_flameshot($file_path);
+}else {
+    print "flameshot is not installed. Would you like to install it? (y/n): ";
+    my $answer = <STDIN>;
+    $answer = '' unless defined $answer;
+    chomp $answer;
+
+    if ($answer =~ /^\s*y(es)?\s*$/i) {
+    my $install = install_command('flameshot');
+
+    if (!defined $install) {
+        die "Could not detect a supported package manager. "
+        . "Please install flameshot manually.\n";
+    }
+   
+    print "Installing: $install\n";
+    if (system($install) == 0) {
+        print "\nflameshot was installed successfully.\n";
+        return run_flameshot($file_path);
+    }else {
+        die "Installation failed. Please install flameshot manually.\n";
+        }
+    }else {
+        print "Okay, flameshot will not be installed. No screenshot taken.\n";
+        return 0;
+    }
+}
 
 if (-e $file_path) {
-    print "Screenshot saved successfully!\n";
+    print "Screenshot file saved successfully!\n";
 } else {
-    print "Screenshot failed or was canceled.\n";
+    print "Screenshot file failed or was canceled.\n";
 }
