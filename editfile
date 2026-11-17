@@ -15,7 +15,7 @@ if (-e $filter) {
     chomp($filter);
     print "Opening Gimp\n";
     # Open the last created file with an absolute path
-    my $command = "gimp-2.10\ --new-instance\ ./screenshot.png";
+    my $command = "gimp\ --new-instance\ ./screenshot.png";
     if(system($command) != 0) { 
         die "Failed to execute GIMP: $!";
     }
