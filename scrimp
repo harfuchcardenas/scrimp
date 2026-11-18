@@ -1,10 +1,12 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use FindBin qw($Bin $Script $RealBin);
 
 # Define the commands
-my $command1 = `pwd`;
+my $command1 = $Bin;
 chomp($command1);
+
 my $command2 = $command1;
 $command1 .= '/screenshot';
 $command2 .= '/editfile';
