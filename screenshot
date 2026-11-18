@@ -47,6 +47,8 @@ sub run_flameshot {
 
     if ($exit_code != 0) {
         print "Screenshot was cancelled\n";
+        my $delete = 'rm '.$file_path;
+        system("$delete");
         exit 1;
     }
 
