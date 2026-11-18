@@ -1,10 +1,13 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use Cwd qw(getcwd);
+use FindBin qw($Bin $Script $RealBin);
 
 # Get the current working directory
-my $current_dir = `pwd`;
+my $current_dir = getcwd();
 chomp($current_dir);
+my $script_dir = $Bin;
 
 # Define the full path for the screenshot file
 my $file_path = $current_dir."/screenshot.png";
@@ -40,15 +43,12 @@ sub run_flameshot {
 
     # --raw prints the image to stdout so we can save it to the exact path
     my $image = `flameshot gui --raw > $file_path`;
+    my $exit_code = $? >> 8;
 
-    if (!defined $image || $image eq '') {
-        print "Screenshot cancelled\n";
-        return 1;
+    if ($exit_code != 0) {
+        print "Screenshot was cancelled\n";
+        exit 1;
     }
-
-    open(my $fh, '>:raw', $file_path) or die "Cannot write $file_path: $!\n";
-    print {$fh} $image;
-    close($fh);
 
     return 0;
 }
@@ -63,10 +63,10 @@ if(is_installed('flameshot')) {
     chomp $answer;
 
     if ($answer =~ /^\s*y(es)?\s*$/i) {
-    my $install = install_command('flameshot');
+        my $install = install_command('flameshot');
 
-    if (!defined $install) {
-        die "Could not detect a supported package manager. "
+        if (!defined $install) {
+            die "Could not detect a supported package manager. "
         . "Please install flameshot manually.\n";
     }
    
@@ -87,4 +87,5 @@ if (-e $file_path) {
     print "Screenshot file saved successfully!\n";
 } else {
     print "Screenshot file failed or was canceled.\n";
+    exit 1;
 }
