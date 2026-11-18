@@ -6,22 +6,23 @@ use File::Glob ':glob';
 use Cwd;
 
 # Get current working directory
-my $pwd = getcwd();
+my $cwd = getcwd();
 
-# Append pwd to the filter string
-my $filter = "$pwd/screenshot.png";
+# Append cwd to the filter string
+my $filter = "$cwd/screenshot.png";
 
 if (-e $filter) {
     chomp($filter);
     print "Opening Gimp\n";
     # Open the last created file with an absolute path
-    my $command = "gimp\ --new-instance\ ./screenshot.png";
+    my $command = "gimp\ --new-instance\ $filter";
+
     if(system($command) != 0) { 
         die "Failed to execute GIMP: $!";
     }
 } else {
     print "Failed to open screenshot.png with Gimp.";
 }
-
-my $command2 = 'rm ./screenshot.png';
+        
+my $command2 = 'rm '.$filter;
 system("$command2");
