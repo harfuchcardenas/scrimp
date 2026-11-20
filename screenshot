@@ -40,13 +40,11 @@ sub install_command {
 
 sub run_flameshot {
     my ($file_path) = @_;
-
-    # --raw prints the image to stdout so we can save it to the exact path
-    my $image = `flameshot gui --raw > $file_path`;
-    my $exit_code = $? >> 8;
-
+    my $image = "flameshot gui --raw > '$file_path'"; # --raw prints the image to stdout so we can save it to the exact path
+    system("$image");
+    my $exit_code = $?;
     if ($exit_code != 0) {
-        print "Screenshot was cancelled\n";
+        print "Screenshot was cancelled \n$exit_code\n";
         my $delete = 'rm '.$file_path;
         system("$delete");
         exit 1;
@@ -54,7 +52,6 @@ sub run_flameshot {
 
     return 0;
 }
-
 
 if(is_installed('flameshot')) {
     run_flameshot($file_path);
